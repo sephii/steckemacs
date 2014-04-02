@@ -189,7 +189,6 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-x a s           | General   | Toggle auto saving of buffers                             | 'auto-save-buffers-enhanced-toggle-activity                 |
 | C-c d             | General   | Change dictionary                                         | 'ispell-change-dictionary                                   |
 | C-c C-f           | General   | Toggle flyspell mode (spellchecking)                      | 'flyspell-mode                                              |
-| M-x               | General   | Helm M-x (execute command)                                | 'helm-M-x                                                   |
 | C-h C-h           | General   | Helm M-x (execute command)                                | 'helm-M-x                                                   |
 | C-h h             | General   | Helm navigate project files                               | 'helm-projectile                                            |
 | <C-S-iso-lefttab> | General   | Helm for files                                            | 'helm-for-files                                             |
@@ -202,7 +201,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-c m             | Interface | Toggle the menu bar                                       | 'menu-bar-mode                                              |
 | <C-mouse-5>       | Interface | Decrease the font size                                    | 'text-scale-decrease                                        |
 | <C-mouse-4>       | Interface | Increase the font size                                    | 'text-scale-increase                                        |
-| ln                | Interface | Show/hide the line numbers                                | 'linum-mode                                                 |
+| lu                | Interface | Show/hide the line numbers                                | 'linum-mode                                                 |
 | C-x C-u           | Internet  | Prompt for URL and insert contents at point               | 'my-url-insert-file-contents                                |
 | C-c C-w           | Internet  | Browse URL under cursor                                   | 'browse-url-at-point                                        |
 | C-z               | Editing   | Undo - but do not trigger redo                            | 'undo-only                                                  |
@@ -238,7 +237,7 @@ The code for the keys is generated from data in an Org table named =keys= using 
 | C-x C-b           | Buffers   | use ido to switch buffers                                 | 'ido-switch-buffer                                          |
 | <f6>              | Buffers   | Kill current buffer                                       | (lambda () (interactive) (kill-buffer (buffer-name)))       |
 | <f8>              | Buffers   | Switch to "other" buffer                                  | (lambda () (interactive) (switch-to-buffer nil))            |
-| jn                | Buffers   | Switch to "other" buffer                                  | (lambda () (interactive) (switch-to-buffer nil))            |
+| ht                | Buffers   | Switch to "other" buffer                                  | (lambda () (interactive) (switch-to-buffer nil))            |
 | fv                | Buffers   | Kill current buffer                                       | (lambda () (interactive) (kill-buffer (buffer-name)))       |
 | sv                | Buffers   | Save the current buffer                                   | 'save-buffer                                                |
 | sc                | Buffers   | Switch to scratch buffer                                  | (lambda () (interactive)(switch-to-buffer "*scratch*"))     |
@@ -419,21 +418,12 @@ Also Emacs should be able to kill processes without asking which is achieved in 
 ** Theme, Faces, Frame
 
 #+BEGIN_SRC emacs-lisp
-(quelpa '(grandshell-theme :repo "steckerhalter/grandshell-theme" :fetcher github))
-(load-theme 'grandshell t)
+(load-theme 'wombat)
 #+END_SRC
 
-Loading my very own [[https://github.com/steckerhalter/grandshell-theme][Grand Shell Theme]] here. It can be installed via [[http://melpa.milkbox.net/#grandshell-theme][MELPA]] too. It looks like this:
-
-#+CAPTION: Grand Shell Theme
-#+NAME: grand-shell-theme
-[[https://raw.github.com/steckerhalter/grandshell-theme/master/grandshell-theme.png]]
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(set-face-attribute 'default nil :family "Bitstream Vera Sans Mono" :height 89)
+#+BEGIN_SRC emacs-lisp
+(set-frame-font "Inconsolata 14" nil t)
 #+END_SRC
-
-I put that line into =~/.user.el= which is loaded [[*User%20Settings][in this init file too.]] To avoid getting this line into the config I use =:tangle no= as an option in the org-mode source block header.
 
 #+BEGIN_SRC emacs-lisp
 (defun my-after-make-frame (frame)
@@ -1746,14 +1736,14 @@ https://raw.github.com/bbatsov/projectile/master/screenshots/projectile.png
 *** rainbow-mode
 
 #+BEGIN_QUOTE
-rainbow-mode is a minor mode for Emacs which displays strings representing colors with the color they represent as background.
+rainbow-mode is a minor mode for Emacs which displays strings representing colors with the color they represent as background. It's disabled at the moment since it seems to be incompatible with the emacs version packaged in Debian.
 #+END_QUOTE
 
 http://julien.danjou.info/media/images/rainbow-mode/rainbow-mode.png
 
 Homepage: http://julien.danjou.info/projects/emacs-packages#rainbow-mode
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (unless (require 'rainbow-mode nil t)
   (with-temp-buffer
     (url-insert-file-contents
@@ -2097,6 +2087,22 @@ An Emacs client for the command line web-browser =w3m=
                         (define-key w3m-mode-map "O" 'w3m-goto-new-session-url)
                         )))
   )
+#+END_SRC
+
+*** evil
+
+#+BEGIN_SRC emacs-lisp
+(setq evil-want-C-u-scroll t)
+
+(quelpa 'evil)
+(require 'evil)
+(evil-mode 1)
+
+(evil-set-initial-state 'magit-log-edit-mode 'emacs)
+(evil-set-initial-state 'nav-mode 'emacs)
+(evil-set-initial-state 'grep-mode 'emacs)
+(evil-set-initial-state 'helm-mode 'emacs)
+(evil-set-initial-state 'helm-command 'emacs)
 #+END_SRC
 
 ** end
