@@ -336,7 +336,6 @@ Kind of a sweeping blow to make sure UTF-8 is used everywhere.
  inhibit-startup-message t
  backup-directory-alist `((".*" . ,temporary-file-directory)) ;don't clutter my fs and put backups into tmp
  auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
- require-final-newline t          ;auto add newline at the end of file
  column-number-mode t             ;show the column number
  default-major-mode 'text-mode    ;use text mode per default
  mouse-yank-at-point t     ;middle click with the mouse yanks at point
