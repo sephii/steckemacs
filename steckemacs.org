@@ -763,7 +763,6 @@ http://company-mode.github.io/images/company-semantic.png
 
 #+BEGIN_SRC emacs-lisp
 (quelpa '(company :repo "company-mode/company-mode" :fetcher github))
-(quelpa '(company-cider :fetcher github :repo "clojure-emacs/company-cider"))
 (require 'company)
 (setq company-idle-delay 0.3)
 (setq company-tooltip-limit 20)
@@ -772,9 +771,7 @@ http://company-mode.github.io/images/company-semantic.png
 (setq company-auto-complete nil)
 (global-company-mode 1)
 (add-to-list 'company-backends 'company-dabbrev t)
-(add-to-list 'company-backends 'company-ispell t)
 (add-to-list 'company-backends 'company-files t)
-(add-to-list 'company-backends 'company-cider)
 #+END_SRC
 
 I started using =company= because =auto-complete= seemed to be buggy and slow. Some of the company features are pretty cool, for example the ability to search within completions with =C-s= or to show the symbol definition with =C-w=. =<f1>= shows the full documentation of a symbol. I miss the popup from auto-complete a bit but I guess that's not so important in the end.
@@ -937,61 +934,6 @@ Flash some lights when evaluating expressions. See the EmacsWiki for some more i
 (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'eval-sexp-fu-eval-sexp-inner-list)
 (define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-sexp-fu-eval-sexp-inner-sexp)
 #+END_SRC
-
-*** erc mode
-
-#+BEGIN_QUOTE
-ERC is a powerful, modular, and extensible IRC client for Emacs.
-#+END_QUOTE
-
-I tried several IRC clients for Emacs but ERC is still my favorite.
-
-EmacsWiki: http://www.emacswiki.org/emacs/ERC
-
-#+BEGIN_SRC emacs-lisp
-(quelpa '(erc-hl-nicks :fetcher github :repo "leathekd/erc-hl-nicks"))
-(add-hook 'erc-mode-hook (lambda ()
-                           (erc-truncate-mode t)
-                           (erc-fill-disable)
-                           (set (make-local-variable 'scroll-conservatively) 1000)
-                           (visual-line-mode)))
-(setq erc-timestamp-format "%H:%M "
-      erc-fill-prefix "      "
-      erc-insert-timestamp-function 'erc-insert-timestamp-left)
-(setq erc-interpret-mirc-color t)
-(setq erc-kill-buffer-on-part t)
-(setq erc-kill-server-buffer-on-quit t)
-(setq erc-kill-queries-on-quit t)
-(setq erc-kill-server-buffer-on-quit t)
-(setq erc-server-send-ping-interval 45)
-(setq erc-server-send-ping-timeout 180)
-(setq erc-server-reconnect-timeout 60)
-(erc-track-mode t)
-(setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
-                                "324" "329" "332" "333" "353" "477"))
-(setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
-
-;; ------ template for .user.el
-;; (setq erc-prompt-for-nickserv-password nil)
-;; (setq erc-server "hostname"
-;;       erc-port 7000
-;;       erc-nick "user"
-;;       erc-user-full-name "user"
-;;       erc-email-userid "user"
-;;       erc-password "user:pw"
-;;       )
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(defun my-erc-connect ()
-  "Connect with ERC or open the last active buffer."
-  (interactive)
-  (if (erc-buffer-list)
-      (erc-track-switch-buffer 1)
-    (erc-tls :server erc-server :port erc-port :nick erc-nick :full-name erc-user-full-name :password erc-password)))
-#+END_SRC
-
-I use this function so that do not accidentally connect twice with ERC which happened quite often before.
 
 *** eww
 *Emacs Web Wowser* is the bult-in Emacs Webbrowser (Emacs 24.4 and later).
